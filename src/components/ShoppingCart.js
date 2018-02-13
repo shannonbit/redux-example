@@ -1,7 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Panel, Table, Button, Glyphicon } from 'react-bootstrap';
-import { removeFromCart } from "../actionCreators";
-import { connect } from "react-redux";
 
 const styles = {
   footer: {
@@ -10,23 +8,33 @@ const styles = {
 }
 
 
-const ShoppingCart = ({cart, removeFromCart}) => {
+class ShoppingCart extends Component {
+  constructor() {
+    super();
+    this.removeFromCart = this.removeFromCart.bind(this);
+
+    this.state = {
+      cart: []
+    }
+  }
+
+  render() {
     return (
       <Panel header="Shopping Cart">
         <Table fill>
           <tbody>
-            {cart.map(product =>
+            {this.state.cart.map(product =>
               <tr key={product.id}>
                 <td>{product.name}</td>
                 <td className="text-right">${product.price}</td>
-                <td className="text-right"><Button bsSize="xsmall" bsStyle="danger" onClick={() => removeFromCart(product)}><Glyphicon glyph="trash" /></Button></td>
+                <td className="text-right"><Button bsSize="xsmall" bsStyle="danger" onClick={() => this.removeFromCart(product)}><Glyphicon glyph="trash" /></Button></td>
               </tr>
             )}
           </tbody>
           <tfoot>
             <tr>
               <td colSpan="4" style={styles.footer}>
-                Total: ${cart.reduce((sum, product) => sum + product.price, 0)}
+                Total: ${this.state.cart.reduce((sum, product) => sum + product.price, 0)}
               </td>
             </tr>
           </tfoot>
@@ -34,20 +42,11 @@ const ShoppingCart = ({cart, removeFromCart}) => {
 
       </Panel>
     )
-}
+  }
 
-const mapStateToProps = state => {
-  return {
-    cart: state.cart
+  removeFromCart(product) {
+
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    removeFromCart(product) {
-      dispatch(removeFromCart(product));
-    }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ShoppingCart);
+export default ShoppingCart;
