@@ -9,8 +9,6 @@ const products = (state = [], action) => {
 }
 
 const cart = (state = [], action) => {
-  console.log("state cart:::", state);
-  console.log("action cart:::", action);
   if (action.type === "ADD_TO_CART") {
     return state.concat(action.product);
   } else if( action.type === "DELETE_FROM_CART") {
