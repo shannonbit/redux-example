@@ -1,52 +1,48 @@
-import React from 'react';
-import { Button, Glyphicon } from 'react-bootstrap';
-import { addToCart } from "../actionCreators";
+import React from "react";
+import PropTypes from "prop-types";
+import { Button, Glyphicon } from "react-bootstrap";
 import { connect } from "react-redux";
+import { addToCart } from "../actionCreators";
 
 const styles = {
-  products: {
-    display: 'flex',
-    alignItems: 'stretch',
-    flexWrap: 'wrap'
-  },
-  product: {
-    width: '220px',
-    marginLeft: 10,
-    marginRight: 10
-  }
+    products: {
+        display: "flex",
+        alignItems: "stretch",
+        flexWrap: "wrap",
+    },
+    product: {
+        width: "220px",
+        marginLeft: 10,
+        marginRight: 10,
+    },
 };
 
-const ProductList = ({ products, addToCart }) => {
-  
-    return (
-      <div style={styles.products}>
-        {products.map(product =>
-          <div className="thumbnail" style={styles.product} key={product.id}>
-            <img src={product.image} alt={product.name} />
-            <div className="caption">
-              <h4>{product.name}</h4>
-              <p>
-                <Button bsStyle="primary" onClick={() => addToCart(product)} role="button" disabled={product.inventory <= 0}>${product.price} <Glyphicon glyph="shopping-cart" /></Button>
-              </p>
+const ProductList = ({ products }) => (
+    <div style={styles.products}>
+        {products.map(product => (
+            <div className="thumbnail" style={styles.product} key={product.id}>
+                <img src={product.image} alt={product.name} />
+                <div className="caption">
+                    <h4>{product.name}</h4>
+                    <p>
+                        <Button bsStyle="primary" onClick={() => addToCart(product)} role="button" disabled={product.inventory <= 0}>${product.price} <Glyphicon glyph="shopping-cart" /></Button>
+                    </p>
+                </div>
             </div>
-          </div>
-        )}
-      </div>
-    );
- }
+        ))}
+    </div>
+);
 
-const mapStateToProps = state => {
-    return {
-        products: state.products
-    };
-}
+const mapStateToProps = state => (
+    { products: state.products }
+);
 
-const mapDispatchToProps = dispatch => {
-    return {
-        addToCart(product) {
-            dispatch(addToCart(product))
-        }
-    };
-}
+const mapDispatchToProps = dispatch => (
+    { addToCart(product) { dispatch(addToCart(product)); } }
+);
+
+ProductList.propTypes = {
+    products: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductList);
